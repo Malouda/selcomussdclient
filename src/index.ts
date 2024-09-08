@@ -121,7 +121,7 @@ export default class SelComClient {
     }
 }
 
-interface paymentResponseInterface {
+export interface paymentResponseInterface {
     result: 'SUCCESS' | 'FAILURE'; // Assuming these are the possible values
     resultcode: string;
     order_id: string;
