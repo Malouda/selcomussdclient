@@ -41,6 +41,7 @@ describe('SelComClient', () => {
             buyer_name: 'John Joh',
             buyer_phone: '255082555555',
             amount: 8000,
+            webhook:"https://example.com",
             currency: 'TZS',
             buyer_remarks: 'None',
             merchant_remarks: 'None',
