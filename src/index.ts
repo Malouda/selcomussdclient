@@ -121,13 +121,16 @@ export default class SelComClient {
     }
 }
 
-export interface paymentResponse {
-    transid: string;
-    order_id: string;
-    reference: string;
-    result: 'SUCCESS' | 'FAIL';
+interface paymentResponseInterface {
+    result: 'SUCCESS' | 'FAILURE'; // Assuming these are the possible values
     resultcode: string;
-    payment_status: 'COMPLETED' | 'CANCELLED' | 'PENDING' | 'USERCANCELED';
+    order_id: string;
+    transid: string;
+    reference: string;
+    channel: string;
+    amount: string;
+    phone: string;
+    payment_status: 'COMPLETED' | 'PENDING' | 'FAILED'; // Assuming these are the possible values
 }
 
 export interface ordersListPayloadInterface {
