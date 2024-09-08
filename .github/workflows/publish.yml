@@ -3,7 +3,7 @@ name: Publish to npm
 on:
   push:
     branches:
-      - main  # Replace 'main' with the branch you want to trigger the publish
+      - main  # Or the branch you want to trigger the publish
 
 jobs:
   publish:
@@ -21,12 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Ensure package version matches branch
-        run: |
-          echo "Checking version..."
-          # Automatically bump version if necessary using npm version (patch | minor | major)
-          npm version patch
 
       - name: Publish to npm
         run: npm publish --access public
