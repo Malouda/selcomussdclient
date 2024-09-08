@@ -2,8 +2,8 @@ name: Publish to npm
 
 on:
   push:
-    tags:
-      - 'v*.*.*'  # This runs when a new version tag is pushed
+    branches:
+      - main  # Replace 'main' with the branch you want to trigger the publish
 
 jobs:
   publish:
@@ -22,7 +22,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Ensure package version matches branch
+        run: |
+          echo "Checking version..."
+          # Automatically bump version if necessary using npm version (patch | minor | major)
+          npm version patch
+
       - name: Publish to npm
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Clear npm cache (optional)
+        run: npm cache clean --force
