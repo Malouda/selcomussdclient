@@ -164,6 +164,7 @@ export interface minimalOrderPayLoadInterface {
     buyer_name: string;
     buyer_phone: string;
     amount: number;
+    webhook: string,
     currency: string;
     buyer_remarks: string;
     merchant_remarks: string;

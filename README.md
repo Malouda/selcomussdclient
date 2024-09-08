@@ -3,9 +3,8 @@
 selcomussdclient is a TypeScript package for interacting with the Selcom API. It provides an easy-to-use interface for creating orders, processing payments, and managing transactions.
 
 ## Installation
-
 ```bash
-npm install selcom-client
+npm install selcomussdclient
 ```
 
 ## Usage
@@ -13,7 +12,7 @@ npm install selcom-client
 ### Initializing the Client
 
 ```typescript
-import SelComClient, { BASE_URL_ENUM } from 'selcom-client';
+import SelComClient, { BASE_URL_ENUM } from 'selcomussdclient';
 
 const client = new SelComClient(
   BASE_URL_ENUM.BASE_URL,
@@ -116,6 +115,15 @@ export enum URL_CANCEL_ORDER_PATH_ENUM {
 The package includes several interfaces for request payloads and response data:
 
 ```typescript
+export interface paymentResponse {
+    transid: string;
+    order_id: string;
+    reference: string;
+    result: 'SUCCESS' | 'FAIL';
+    resultcode: string;
+    payment_status: 'COMPLETED' | 'CANCELLED' | 'PENDING' | 'USERCANCELED';
+}
+
 export interface minimalOrderPayLoadInterface {
     vendor: string;
     order_id: string;
