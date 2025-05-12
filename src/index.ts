@@ -10,6 +10,7 @@ export enum BASE_URL_ENUM {
 export enum MAIN_PATH_ENUM {
     MINIMUM_ORDER_PATH = '/checkout/create-order-minimal',
     USSD_PUSH_PATH = '/checkout/wallet-payment',
+    BANK_TRANSFER_PATH = '/qwiksend/process',
 }
 
 export enum URL_LIST_ORDER_PATH_ENUM {
@@ -51,7 +52,7 @@ export default class SelComClient {
 
         return [authToken, timestamp, digest, signedFields];
     }
-    async post<T extends uSSDPaymentPayloadInterface | minimalOrderPayLoadInterface>(path: MAIN_PATH_ENUM | string, jsonData: T ): Promise<T extends uSSDPaymentPayloadInterface ? ussdPushResponseInterface : minimalOrderResponseInterface> {
+    async post<T extends uSSDPaymentPayloadInterface | minimalOrderPayLoadInterface | BankTransferPayloadInterface>(path: MAIN_PATH_ENUM | string, jsonData: T ): Promise<T extends uSSDPaymentPayloadInterface ? ussdPushResponseInterface : minimalOrderResponseInterface> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
         console.log(this.baseUrl + path);
         try {
@@ -172,6 +173,32 @@ export interface minimalOrderPayLoadInterface {
     buyer_remarks: string;
     merchant_remarks: string;
     no_of_items: number;
+}
+
+export interface BankTransferPayloadInterface {
+    transid: string;
+
+    recipientFiCode: string;
+
+    recipientAccount: string;
+
+    recipientName: string;
+
+    senderAccount: string;
+
+    senderName: string;
+
+    amount: number;
+
+    vendor: string;
+
+    pin: string;
+
+    msisdn: string;
+
+    purpose: string;
+
+    remarks: string;
 }
 
 interface minimalOrderData {
