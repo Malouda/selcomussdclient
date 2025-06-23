@@ -11,7 +11,7 @@ export enum MAIN_PATH_ENUM {
     MINIMUM_ORDER_PATH = '/checkout/create-order-minimal',
     USSD_PUSH_PATH = '/checkout/wallet-payment',
     BANK_TRANSFER_PATH = '/qwiksend/process',
-    WALLET_CASHIN_PATH = "/v1/walletcashin/process"
+    WALLET_CASHIN_PATH = "/walletcashin/process"
 
 }
 
