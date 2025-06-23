@@ -54,7 +54,7 @@ export default class SelComClient {
 
         return [authToken, timestamp, digest, signedFields];
     }
-    async post<T extends uSSDPaymentPayloadInterface | minimalOrderPayLoadInterface | BankTransferPayloadInterface>(path: MAIN_PATH_ENUM | string, jsonData: T ): Promise<T extends uSSDPaymentPayloadInterface ? ussdPushResponseInterface : minimalOrderResponseInterface> {
+    async post<T extends uSSDPaymentPayloadInterface | minimalOrderPayLoadInterface | BankTransferPayloadInterface | mobileMoneyTransferInterface>(path: MAIN_PATH_ENUM | string, jsonData: T ): Promise<T extends uSSDPaymentPayloadInterface ? ussdPushResponseInterface : minimalOrderResponseInterface> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
         console.log(this.baseUrl + path);
         try {
@@ -176,6 +176,16 @@ export interface minimalOrderPayLoadInterface {
     merchant_remarks: string;
     no_of_items: number;
 }
+
+export interface mobileMoneyTransferInterface {
+    transid: string;
+    utilitycode: string;
+    utilityref: string;
+    amount: number;
+    vendor: string;
+    pin: string;
+    msisdn: string;
+  }
 
 export interface BankTransferPayloadInterface {
     transid: string;
