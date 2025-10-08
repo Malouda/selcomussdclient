@@ -204,3 +204,5 @@ if (response.result === 'SUCCESS') {
 ## License
 
 This project is licensed under the MIT License.
+
+<!-- Security scan triggered at 2025-10-08 08:49:58 -->
