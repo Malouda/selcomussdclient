@@ -54,7 +54,7 @@ export default class SelComClient {
     apiKey: string;
     apiSecret: string;
 
-    constructor(baseUrl: BASE_URL_ENUM |string, apiKey: string, apiSecret: string) {
+    constructor(baseUrl: BASE_URL_ENUM | string, apiKey: string, apiSecret: string) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
         this.apiSecret = apiSecret;
@@ -78,7 +78,8 @@ export default class SelComClient {
 
         return [authToken, timestamp, digest, signedFields];
     }
-    async post<T extends uSSDPaymentPayloadInterface | minimalOrderPayLoadInterface | BankTransferPayloadInterface | mobileMoneyTransferInterface>(path: MAIN_PATH_ENUM | string, jsonData: T ): Promise<T extends uSSDPaymentPayloadInterface ? ussdPushResponseInterface : minimalOrderResponseInterface> {
+
+    async post<T extends uSSDPaymentPayloadInterface | minimalOrderPayLoadInterface | BankTransferPayloadInterface | mobileMoneyTransferInterface>(path: MAIN_PATH_ENUM | string, jsonData: T): Promise<T extends BankTransferPayloadInterface ? BankTransferResponseInterface : T extends minimalOrderPayLoadInterface ? minimalOrderResponseInterface : T extends uSSDPaymentPayloadInterface ? ussdPushResponseInterface : T extends mobileMoneyTransferInterface ? MobileMoneyResponseInterface : never> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
         console.log(this.baseUrl + path);
         try {
@@ -370,7 +371,7 @@ export interface mobileMoneyTransferInterface {
     vendor: string;
     pin: string;
     msisdn: string;
-  }
+}
 
 export interface BankTransferPayloadInterface {
     transid: string;
