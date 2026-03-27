@@ -19,7 +19,31 @@ export enum URL_LIST_ORDER_PATH_ENUM {
     LIST_ORDERS = '/checkout/list-orders',
 }
 export enum URL_CANCEL_ORDER_PATH_ENUM {
-    CANCEL_ORDER = '/v1/checkout/cancel-order',
+    CANCEL_ORDER = '/checkout/cancel-order',
+}
+
+export enum URL_ORDER_STATUS_PATH_ENUM {
+    ORDER_STATUS = '/checkout/order-status',
+}
+
+export enum WALLET_LOOKUP_PATH_ENUM {
+    WALLET_LOOKUP_PATH = '/walletcashin/namelookup',
+}
+
+export enum BANK_LOOKUP_PATH_ENUM {
+    BANK_LOOKUP_PATH = '/qwiksend/lookup',
+}
+
+export enum FLOAT_ACCOUNT_BALANCE_PATH_ENUM {
+    FLOAT_ACCOUNT_BALANCE_PATH = '/vendor/balance',
+}
+
+export enum BANK_TRANSFER_STATUS_PATH_ENUM {
+    QUERY_STATUS_PATH = '/qwiksend/query',
+}
+
+export enum WALLET_CASHIN_QUERY_STATUS {
+    QUERY_STATUS_PATH = '/walletcashin/query',
 }
 
 
@@ -139,6 +163,144 @@ export default class SelComClient {
                     "Signed-Fields": signedFields,
                 },
                 data: jsonData,
+            });
+            return response.data;
+        } catch (error: any) {
+            return error.response.data;
+        }
+    }
+
+    async floatBalance(path: FLOAT_ACCOUNT_BALANCE_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+        const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
+        console.log(this.baseUrl + path);
+        try {
+            const response: AxiosResponse<any> = await axios({
+                method: 'post',
+                url: this.baseUrl + path,
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": authToken,
+                    "Digest-Method": "HS256",
+                    "Digest": digest,
+                    "Timestamp": timestamp,
+                    "Signed-Fields": signedFields,
+                },
+                data: jsonData,
+            });
+            return response.data;
+        } catch (error: any) {
+            return error.response.data;
+        }
+    }
+
+    async bankLookup(path: BANK_LOOKUP_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+        const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
+        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData).toString()}`);
+        try {
+            const response: AxiosResponse<any> = await axios({
+                method: 'get',
+                url: this.baseUrl + path,
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": authToken,
+                    "Digest-Method": "HS256",
+                    "Digest": digest,
+                    "Timestamp": timestamp,
+                    "Signed-Fields": signedFields,
+                },
+                params: jsonData,
+            });
+            return response.data;
+        } catch (error: any) {
+            return error.response.data;
+        }
+    }
+
+    async walletCashinQueryStatus(path: WALLET_CASHIN_QUERY_STATUS | string, jsonData: Record<string, any>): Promise<any> {
+        const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
+        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData).toString()}`);
+        try {
+            const response: AxiosResponse<any> = await axios({
+                method: 'get',
+                url: this.baseUrl + path,
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": authToken,
+                    "Digest-Method": "HS256",
+                    "Digest": digest,
+                    "Timestamp": timestamp,
+                    "Signed-Fields": signedFields,
+                },
+                params: jsonData,
+            });
+            return response.data;
+        } catch (error: any) {
+            return error.response.data;
+        }
+    }
+
+    async bankTransferQueryStatus(path: BANK_TRANSFER_STATUS_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+        const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
+        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData).toString()}`);
+        try {
+            const response: AxiosResponse<any> = await axios({
+                method: 'get',
+                url: this.baseUrl + path,
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": authToken,
+                    "Digest-Method": "HS256",
+                    "Digest": digest,
+                    "Timestamp": timestamp,
+                    "Signed-Fields": signedFields,
+                },
+                params: jsonData,
+            });
+            return response.data;
+        } catch (error: any) {
+            return error.response.data;
+        }
+    }
+
+    async walletLookup(path: WALLET_LOOKUP_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+        const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
+        console.log(this.baseUrl + path);
+        try {
+            const response: AxiosResponse<any> = await axios({
+                method: 'get',
+                url: this.baseUrl + path,
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": authToken,
+                    "Digest-Method": "HS256",
+                    "Digest": digest,
+                    "Timestamp": timestamp,
+                    "Signed-Fields": signedFields,
+                },
+                params: jsonData,
+            });
+            return response.data;
+        } catch (error: any) {
+            return error.response.data;
+        }
+    }
+
+    async getOrderStatus(path: URL_ORDER_STATUS_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+        const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
+        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData).toString()}`);
+        try {
+            const response: AxiosResponse<any> = await axios({
+                method: 'get',
+                url: this.baseUrl + path,
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": authToken,
+                    "Digest-Method": "HS256",
+                    "Digest": digest,
+                    "Timestamp": timestamp,
+                    "Signed-Fields": signedFields,
+                },
+                params: jsonData,
             });
             return response.data;
         } catch (error: any) {
@@ -299,4 +461,48 @@ export interface createTillAliasWebhookPayloadInterface {
     amount: string;
     phone: string;
     payment_status: 'COMPLETED' | 'PENDING' | 'CANCELLED' | 'USERCANCELED';
+}
+
+export enum BANKS_ENUM {
+    ACCESSBANK = 'ACCESS BANK TANZANIA',
+    BOBTZ = 'BOB TANZANIA',
+    CANARA = 'CANARA TANZANIA',
+    NCBATZ = 'NCBA TANZANIA',
+    ECOBANKTZ = 'ECOBANK TANZANIA',
+    CRDB = 'CRDBBANK',
+    LETSHEGO = 'LETSHEGO BANK TANZANIA',
+    ACB = 'AKIBA COMMERCIAL BANK TANZANIA',
+    AMANA = 'AMANA BANK TANZANIA',
+    BANCABC = 'BANCABC TANZANIA',
+    BOA = 'BANK OF AFRICA TANZANIA',
+    BARODA = 'BANK OF BARODA TANZANIA',
+    ABSA = 'ABSA BANK TANZANIA',
+    EQUITY = 'EQUITY BANK TANZANIA',
+    EXIM = 'EXIM BANK TANZANIA',
+    IMBANK = 'I AND M BANK TANZANIA',
+    KCB = 'KENYA COMMERCIAL BANK LTD',
+    MAENDELEO = 'MAENDELEO BANK',
+    MKOMBOZI = 'MKOMBOZI COMMERCIAL BANK',
+    NBC = 'NATIONAL BANK OF COMMERCE',
+    NMB = 'NATIONAL MICROFINANCE BANK',
+    STANBIC = 'STANBIC BANK TANZANIA',
+    SCB = 'STANDARD CHARTERED BANK',
+    TCB = 'TANZANIA COMMERCIAL BANK',
+    UBA = 'UNITED BANK FOR AFRICA',
+    YETUMFI = 'YETU MICROFINANCE',
+    AZANIA = 'AZANIA TANZANIA',
+    BOI = 'BANK OF INDIA TANZANIA',
+    DTB = 'DIAMOND TRUST BANK',
+    DCB = 'DCB COMMERCIAL BANK',
+    FINCA = 'FINCA MICROFINANCE BANK',
+    GTBANK = 'GT BANK TANZANIA',
+    HABIB = 'HABIB BANK',
+    ICB = 'ICB BANK',
+    KILIMANJARO = 'KILIMANJARO COMMERCIAL BANK',
+    MWALIMU = 'MWALIMU COMMERCIAL BANK OF TANZANIA',
+    MWANGA = 'MWANGA HAKIKA MICROFINANCE BANK',
+    PBZ = 'PEOPLES BANK OF ZANZIBAR',
+    UCHUMI = 'UCHUMI COMMERCIAL BANK',
+    CHINADASHENG = 'CHINA DASHENG BANK LTD',
+    CITIBANK = 'CITIBANK TANZANIA LIMITED',
 }
