@@ -11,8 +11,8 @@ export enum MAIN_PATH_ENUM {
     MINIMUM_ORDER_PATH = '/checkout/create-order-minimal',
     USSD_PUSH_PATH = '/checkout/wallet-payment',
     BANK_TRANSFER_PATH = '/qwiksend/process',
-    WALLET_CASHIN_PATH = "/walletcashin/process"
-
+    WALLET_CASHIN_PATH = "/walletcashin/process",
+    CREATE_TILL_ALIAS_PATH = '/checkout/create-till-alias',
 }
 
 export enum URL_LIST_ORDER_PATH_ENUM {
@@ -116,6 +116,29 @@ export default class SelComClient {
                     "Signed-Fields": signedFields,
                 },
                 params: jsonData,
+            });
+            return response.data;
+        } catch (error: any) {
+            return error.response.data;
+        }
+    }
+
+    async createTillAlias(jsonData: createTillAliasPayloadInterface): Promise<createTillAliasResponseInterface> {
+        const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
+
+        try {
+            const response: AxiosResponse<any> = await axios({
+                method: 'post',
+                url: this.baseUrl + MAIN_PATH_ENUM.CREATE_TILL_ALIAS_PATH,
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": authToken,
+                    "Digest-Method": "HS256",
+                    "Digest": digest,
+                    "Timestamp": timestamp,
+                    "Signed-Fields": signedFields,
+                },
+                data: jsonData,
             });
             return response.data;
         } catch (error: any) {
@@ -248,3 +271,32 @@ export interface orderCancelResponseInterface {
     data: [];
 }
 
+export interface createTillAliasPayloadInterface {
+    vendor: string;
+    name: string;
+    memo: string;
+}
+
+interface tillAliasData {
+    till_alias: string;
+}
+
+export interface createTillAliasResponseInterface {
+    reference: string;
+    resultcode: string;
+    result: 'SUCCESS' | 'FAIL';
+    message: string;
+    data: tillAliasData[];
+}
+
+export interface createTillAliasWebhookPayloadInterface {
+    result: 'SUCCESS' | 'FAIL';
+    resultcode: string;
+    order_id: string;
+    transid: string;
+    reference: string;
+    channel: string;
+    amount: string;
+    phone: string;
+    payment_status: 'COMPLETED' | 'PENDING' | 'CANCELLED' | 'USERCANCELED';
+}
