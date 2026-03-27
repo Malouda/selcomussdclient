@@ -170,7 +170,7 @@ export default class SelComClient {
         }
     }
 
-    async floatBalance(path: FLOAT_ACCOUNT_BALANCE_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+    async floatBalance(path: FLOAT_ACCOUNT_BALANCE_PATH_ENUM | string, jsonData: FloatAccountBalanceRequestInterface): Promise<FloatAccountBalanceResponseInterface> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
         console.log(this.baseUrl + path);
         try {
@@ -193,9 +193,9 @@ export default class SelComClient {
         }
     }
 
-    async bankLookup(path: BANK_LOOKUP_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+    async bankLookup(path: BANK_LOOKUP_PATH_ENUM | string, jsonData: bankLookUpPayload): Promise<PaymentLookupResponse> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
-        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData).toString()}`);
+        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData as unknown as Record<string, string>).toString()}`);
         try {
             const response: AxiosResponse<any> = await axios({
                 method: 'get',
@@ -216,9 +216,9 @@ export default class SelComClient {
         }
     }
 
-    async walletCashinQueryStatus(path: WALLET_CASHIN_QUERY_STATUS | string, jsonData: Record<string, any>): Promise<any> {
+    async walletCashinQueryStatus(path: WALLET_CASHIN_QUERY_STATUS | string, jsonData: WalletTransactionQueryStatusRequestInterface): Promise<WalletTransactionQueryStatusResppnseInterface> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
-        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData).toString()}`);
+        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData as unknown as Record<string, string>).toString()}`);
         try {
             const response: AxiosResponse<any> = await axios({
                 method: 'get',
@@ -239,9 +239,9 @@ export default class SelComClient {
         }
     }
 
-    async bankTransferQueryStatus(path: BANK_TRANSFER_STATUS_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+    async bankTransferQueryStatus(path: BANK_TRANSFER_STATUS_PATH_ENUM | string, jsonData: BankTransferStatusRequestInterface): Promise<BankTransferStatusResponseInterface> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
-        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData).toString()}`);
+        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData as unknown as Record<string, string>).toString()}`);
         try {
             const response: AxiosResponse<any> = await axios({
                 method: 'get',
@@ -262,7 +262,7 @@ export default class SelComClient {
         }
     }
 
-    async walletLookup(path: WALLET_LOOKUP_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+    async walletLookup(path: WALLET_LOOKUP_PATH_ENUM | string, jsonData: WalletNameLookupInterface): Promise<NameFetchResponseInterface> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
         console.log(this.baseUrl + path);
         try {
@@ -285,9 +285,9 @@ export default class SelComClient {
         }
     }
 
-    async getOrderStatus(path: URL_ORDER_STATUS_PATH_ENUM | string, jsonData: Record<string, any>): Promise<any> {
+    async getOrderStatus(path: URL_ORDER_STATUS_PATH_ENUM | string, jsonData: orderStatusPayloadInterface): Promise<orderStatusResponseInterface> {
         const [authToken, timestamp, digest, signedFields] = this.computeHeader(jsonData);
-        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData).toString()}`);
+        console.log('GET URL with params:', `${this.baseUrl}${path}?${new URLSearchParams(jsonData as unknown as Record<string, string>).toString()}`);
         try {
             const response: AxiosResponse<any> = await axios({
                 method: 'get',
@@ -461,6 +461,124 @@ export interface createTillAliasWebhookPayloadInterface {
     amount: string;
     phone: string;
     payment_status: 'COMPLETED' | 'PENDING' | 'CANCELLED' | 'USERCANCELED';
+}
+
+export interface FloatAccountBalanceRequestInterface {
+    vendor: string;
+    pin: string;
+    transid: string;
+}
+
+export interface FloatAccountBalanceResponseInterface {
+    reference: string;
+    transid: string;
+    resultcode: string;
+    result: 'SUCCESS' | 'FAIL';
+    message: string;
+    data: Array<{ balance: string }>;
+}
+
+export interface bankLookUpResponseInterface {
+    bank: string;
+    account: string;
+    transid: string;
+}
+
+export interface bankLookUpPayload {
+    bank: string;
+    account: string;
+    transid: string;
+}
+
+export interface PaymentLookupResponse {
+    reference: string;
+    transid: string;
+    resultcode: string;
+    result: string;
+    message: string;
+    data: Array<{ name: string }>;
+}
+
+export interface NameFetchResponseInterface {
+    reference: string;
+    transid: string;
+    resultcode: string;
+    result: string;
+    message: string;
+    data: Array<{ name: string }>;
+}
+
+export interface MobileMoneyResponseInterface {
+    reference: string;
+    transid: string;
+    resultcode: string;
+    result: string;
+    message: string;
+    data: any[];
+}
+
+export interface BankTransferResponseInterface {
+    reference: string;
+    transid: string;
+    resultcode: string;
+    result: string;
+    message: string;
+    data: any[];
+}
+
+export interface WalletTransactionQueryStatusRequestInterface {
+    transid: string;
+}
+
+export interface WalletTransactionQueryStatusResppnseInterface {
+    messageId: string;
+    reference: string;
+    resultcode: string;
+    result: string;
+    message: string;
+    data: Array<{ receipt: string }>;
+}
+
+export interface WalletNameLookupInterface {
+    utilitycode: string;
+    utilityref: string;
+    transid: string;
+}
+
+export interface BankTransferStatusRequestInterface {
+    transid: string;
+}
+
+export interface BankTransferStatusResponseInterface {
+    messageId: string;
+    reference: string;
+    resultcode: string;
+    result: string;
+    message: string;
+    data: Array<{ receipt: string }>;
+}
+
+export interface orderStatusPayloadInterface {
+    order_id: string;
+}
+
+interface orderStatusData {
+    order_id: string;
+    creation_date: string;
+    amount: string;
+    payment_status: 'PENDING' | 'COMPLETED' | 'CANCELLED' | 'USERCANCELLED' | 'REJECTED' | 'INPROGRESS' | 'FAILED';
+    transid: string | null;
+    channel: string | null;
+    reference: string | null;
+    phone: string | null;
+}
+
+export interface orderStatusResponseInterface {
+    reference: string;
+    resultcode: string;
+    result: 'SUCCESS' | 'FAIL';
+    message: string;
+    data: orderStatusData[];
 }
 
 export enum BANKS_ENUM {
